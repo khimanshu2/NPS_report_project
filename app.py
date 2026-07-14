@@ -1172,20 +1172,11 @@ if "df2_prepared" in st.session_state:
                              "General Feedback", "NPS Given", "Avg NPS Score"],
             )
 
-            hd_a = build_hospital_doctor_summary(raw_a, patients_a)
-            hd_b = build_hospital_doctor_summary(raw_b, patients_b)
-            hd_cmp = build_generic_comparison(
-                hd_a, hd_b, key_cols=["Hospital Name", "Doctor"],
-                metric_cols=["Missing Contact", "Total Unique Contact"],
-                rename_map={"Total Unique Contact": "Total Unique Patients"},
-            ) if hd_a is not None and hd_b is not None else None
-
             st.session_state["cmp_results"] = {
                 "label": f"{month_a} vs {month_b}",
                 "Table 1 - Performance Comparison": perf_cmp,
                 "City Comparison": city_cmp,
                 "Applicator Comparison": app_cmp,
-                "Hospital-Doctor Comparison": hd_cmp,
             }
 
         if "cmp_results" in st.session_state:
@@ -1203,10 +1194,6 @@ if "df2_prepared" in st.session_state:
             if cmp_results["Applicator Comparison"] is not None:
                 st.markdown("**Applicator Comparison**")
                 st.dataframe(cmp_results["Applicator Comparison"], use_container_width=True, hide_index=True)
-
-            if cmp_results["Hospital-Doctor Comparison"] is not None:
-                st.markdown("**Hospital-Doctor Comparison**")
-                st.dataframe(cmp_results["Hospital-Doctor Comparison"], use_container_width=True, hide_index=True)
     else:
         st.info("Need at least two distinct months in the data to build a Month-on-Month comparison.")
 
